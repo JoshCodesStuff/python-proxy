@@ -19,8 +19,8 @@ args = parser.parse_args()
 # You can use int(string) to convert a string to an integer
 # ~~~~ INSERT CODE ~~~~
 
-port = int(args.port)
 host = args.hostname
+port = int(args.port)
 
 # ~~~~ END CODE INSERT ~~~~
 
@@ -72,7 +72,7 @@ while True:
   # Get request from client
   # and store it in message
   # ~~~~ INSERT CODE ~~~~
-  message = clientSocket.recvmsg(1024)
+  message = (clientSocket.recv(1024)).decode("utf-8")
   # ~~~~ END CODE INSERT ~~~~
 
   print ('Received request:')
