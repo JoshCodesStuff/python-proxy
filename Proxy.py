@@ -47,7 +47,7 @@ except:
 try:
   # Listen on the server socket
   # ~~~~ INSERT CODE ~~~~
-  serversocket.listen(1)
+  serversocket.listen(5)
   # ~~~~ END CODE INSERT ~~~~
   print ('Listening to socket')
 except:
@@ -72,6 +72,7 @@ while True:
   # Get request from client
   # and store it in message
   # ~~~~ INSERT CODE ~~~~
+  message = clientSocket.recvmsg(1024)
   # ~~~~ END CODE INSERT ~~~~
 
   print ('Received request:')
