@@ -18,11 +18,16 @@ args = parser.parse_args()
 # bind() accepts an integer only
 # You can use int(string) to convert a string to an integer
 # ~~~~ INSERT CODE ~~~~
+
+port = int(args.port)
+host = args.hostname
+
 # ~~~~ END CODE INSERT ~~~~
 
 try:
   # Create a server socket
   # ~~~~ INSERT CODE ~~~~
+  serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
   # ~~~~ END CODE INSERT ~~~~
   print ('Connected socket')
 except:
@@ -32,6 +37,7 @@ except:
 try:
   # Bind the the server socket to a host and port
   # ~~~~ INSERT CODE ~~~~
+  serversocket.bind(( host, port ))
   # ~~~~ END CODE INSERT ~~~~
   print ('Port is bound')
 except:
@@ -41,6 +47,7 @@ except:
 try:
   # Listen on the server socket
   # ~~~~ INSERT CODE ~~~~
+  serversocket.listen(1)
   # ~~~~ END CODE INSERT ~~~~
   print ('Listening to socket')
 except:
@@ -54,6 +61,7 @@ while True:
   try:
     # Accept connection from client and store in the clientSocket
     # ~~~~ INSERT CODE ~~~~
+    (clientSocket,address) = serversocket.accept()
     # ~~~~ END CODE INSERT ~~~~
     print ('Received a connection from:', args.hostname)
   except:
