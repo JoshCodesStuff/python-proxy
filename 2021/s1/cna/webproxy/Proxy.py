@@ -84,6 +84,9 @@ while True:
   URI = requestParts[1]
   version = requestParts[2]
 
+  #testing
+  print(requestParts)
+
   print ('Method:\t\t' + method)
   print ('URI:\t\t' + URI)
   print ('Version:\t' + version)
@@ -91,12 +94,19 @@ while True:
 
   # Remove http protocol from the URI
   URI = re.sub('^(/?)http(s?)://', '', URI, 1)
+  
+  #testing
+  print(URI, 'URI - http')
 
   # Remove parent directory changes - security
   URI = URI.replace('/..', '')
 
   # Split hostname from resource
   resourceParts = URI.split('/', 1)
+
+  #testing
+  print(resourceParts)
+
   hostname = resourceParts[0]
   resource = '/'
 
@@ -147,6 +157,7 @@ while True:
       # Create a socket to connect to origin server
       # and store in originServerSocket
       # ~~~~ INSERT CODE ~~~~
+      originServerSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
       # ~~~~ END CODE INSERT ~~~~
 
       print ('Connecting to:\t\t' + hostname + '\n')
@@ -156,6 +167,7 @@ while True:
 
         # Connect to the origin server
         # ~~~~ INSERT CODE ~~~~
+        originServerSocket = socket.connect(address)
         # ~~~~ END CODE INSERT ~~~~
 
         print ('Connected to origin Server')
@@ -164,8 +176,8 @@ while True:
         # This lets us use file function calls
         originServerFileObj = originServerSocket.makefile('+', 0)
 
-        originServerRequest = ''
         originServerRequestHeader = ''
+        originServerRequest = ''
         # Create origin server request line and headers to send
         # and store in originServerRequestHeader and originServerRequest
         # originServerRequest is the first line in the request and
@@ -211,7 +223,7 @@ while True:
           os.makedirs(cacheDir)
         cacheFile = open(cacheLocation, 'wb')
 
-        # Save orogin server response in the cache file
+        # Save origin server response in the cache file
         # ~~~~ INSERT CODE ~~~~
         # ~~~~ END CODE INSERT ~~~~
 
