@@ -125,7 +125,7 @@ while True:
   fileExists = os.path.isfile(cacheLocation)
   
   try:
-    # Check wether the file exist in the cache
+    # Check whether the file exist in the cache
     cacheFile = open(cacheLocation, "r")
     outputdata = cacheFile.readlines()
 
@@ -133,6 +133,7 @@ while True:
     # ProxyServer finds a cache hit
     # Send back contents of cached file
     # ~~~~ INSERT CODE ~~~~
+    #serversocket.send(file data, aka outputdata, to client)
     # ~~~~ END CODE INSERT ~~~~
 
     cacheFile.close()
@@ -140,11 +141,15 @@ while True:
   # Error handling for file not found in cache
   except IOError:
     if fileExists:
+      #testing
+      print('Error: File found but unreadable')
+
       clientResponse = ''
       # If we get here, the file exists but the proxy can't open or read it
       # What would be the appropriate status code and message to send to client?
       # store the value in clientResponse
       # ~~~~ INSERT CODE ~~~~
+      clientResponse = '415 Unsupported Media Type'
       # ~~~~ END CODE INSERT ~~~~
 
       print ('Sending to the client:')
@@ -153,11 +158,14 @@ while True:
       clientSocket.sendall(clientResponse + "\r\n\r\n")
 
     else:
+      #testing
+      print('File not found in cache - connecting to origin server for file')
+      
       originServerSocket = None
       # Create a socket to connect to origin server
       # and store in originServerSocket
       # ~~~~ INSERT CODE ~~~~
-      originServerSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
+      originServerSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
       # ~~~~ END CODE INSERT ~~~~
 
       print ('Connecting to:\t\t' + hostname + '\n')
@@ -183,6 +191,9 @@ while True:
         # originServerRequest is the first line in the request and
         # originServerRequestHeader is the second line in the request
         # ~~~~ INSERT CODE ~~~~
+
+        # honestly not sure what to do yet but we'll get there
+
         # ~~~~ END CODE INSERT ~~~~
 
         # Construct the request to send to the origin server
@@ -203,10 +214,12 @@ while True:
 
         # Get the response from the origin server
         # ~~~~ INSERT CODE ~~~~
+          #get response using serversocket.recv
         # ~~~~ END CODE INSERT ~~~~
 
         # Send the response to the client
         # ~~~~ INSERT CODE ~~~~
+          #serversocket.send() - same method as sending cached file
         # ~~~~ END CODE INSERT ~~~~
 
         # finished sending to origin server - shutdown socket writes
@@ -225,6 +238,7 @@ while True:
 
         # Save origin server response in the cache file
         # ~~~~ INSERT CODE ~~~~
+          #store the cached file using IO or makefile? idk
         # ~~~~ END CODE INSERT ~~~~
 
         print ('done sending')
