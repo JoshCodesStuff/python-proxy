@@ -54,6 +54,7 @@ except:
   print ('Failed to listen')
   sys.exit()
 
+#not entirely sure while what is true...
 while True:
   print ('Waiting connection...')
 
@@ -72,7 +73,7 @@ while True:
   # Get request from client
   # and store it in message
   # ~~~~ INSERT CODE ~~~~
-  message = (clientSocket.recv(1024)).decode("utf-8")
+  message = (clientSocket.recv(2048)).decode("utf-8") # convert bytes object to string
   # ~~~~ END CODE INSERT ~~~~
 
   print ('Received request:')
@@ -84,9 +85,6 @@ while True:
   URI = requestParts[1]
   version = requestParts[2]
 
-  #testing
-  print(requestParts)
-
   print ('Method:\t\t' + method)
   print ('URI:\t\t' + URI)
   print ('Version:\t' + version)
@@ -94,9 +92,6 @@ while True:
 
   # Remove http protocol from the URI
   URI = re.sub('^(/?)http(s?)://', '', URI, 1)
-  
-  #testing
-  print(URI, 'URI - http')
 
   # Remove parent directory changes - security
   URI = URI.replace('/..', '')
@@ -104,10 +99,8 @@ while True:
   # Split hostname from resource
   resourceParts = URI.split('/', 1)
 
-  #testing
-  print(resourceParts)
-
   hostname = resourceParts[0]
+  print('hostname: ', hostname, '\n') #testing
   resource = '/'
 
   if len(resourceParts) == 2:
@@ -116,7 +109,7 @@ while True:
 
   print ('Requested Resource:\t' + resource)
 
-  cacheLocation = './' + hostname + resource
+  cacheLocation = './' + hostname + resource #eg ./autoidlab.cs.adelaide.edu.au/default
   if cacheLocation.endswith('/'):
     cacheLocation = cacheLocation + 'default'
 
@@ -133,7 +126,11 @@ while True:
     # ProxyServer finds a cache hit
     # Send back contents of cached file
     # ~~~~ INSERT CODE ~~~~
-    #serversocket.send(file data, aka outputdata, to client)
+    
+    #little hack-it code only sends 1 line from the request (which is normal)
+    for line in outputdata:
+      response = str.encode(line)
+      clientSocket.send(response)
     # ~~~~ END CODE INSERT ~~~~
 
     cacheFile.close()
@@ -170,12 +167,16 @@ while True:
 
       print ('Connecting to:\t\t' + hostname + '\n')
       try:
+        print('creating address for origin socket')
         # Get the IP address for a hostname
         address = socket.gethostbyname(hostname)
 
         # Connect to the origin server
         # ~~~~ INSERT CODE ~~~~
-        originServerSocket = socket.connect(address)
+        print('creating originServerSocket','\n')
+        serverName = 'autoidlab.cs.adelaide.edu.au'
+        serverPort = 80
+        originServerSocket = socket.create_connection( (serverName, serverPort) )
         # ~~~~ END CODE INSERT ~~~~
 
         print ('Connected to origin Server')
@@ -192,7 +193,7 @@ while True:
         # originServerRequestHeader is the second line in the request
         # ~~~~ INSERT CODE ~~~~
 
-        # honestly not sure what to do yet but we'll get there
+        #originServerRequestHeader = 
 
         # ~~~~ END CODE INSERT ~~~~
 
@@ -214,12 +215,12 @@ while True:
 
         # Get the response from the origin server
         # ~~~~ INSERT CODE ~~~~
-          #get response using serversocket.recv
+        response = serversocket.recv(2048)
         # ~~~~ END CODE INSERT ~~~~
 
         # Send the response to the client
         # ~~~~ INSERT CODE ~~~~
-          #serversocket.send() - same method as sending cached file
+        serversocket.send(response)
         # ~~~~ END CODE INSERT ~~~~
 
         # finished sending to origin server - shutdown socket writes
@@ -238,7 +239,7 @@ while True:
 
         # Save origin server response in the cache file
         # ~~~~ INSERT CODE ~~~~
-          #store the cached file using IO or makefile? idk
+        cacheFile.write(response)
         # ~~~~ END CODE INSERT ~~~~
 
         print ('done sending')
@@ -247,9 +248,11 @@ while True:
         print ('cache file closed')
         clientSocket.shutdown(socket.SHUT_WR)
         print ('client socket shutdown for writing')
-      except IOError(value, message):
+      except IOError (value, message):
         print ('origin server request failed. ' + message)
   try:
+    #testing
+    print('closing socket')
     clientSocket.close()
   except:
     print ('Failed to close client socket')
