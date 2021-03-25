@@ -1,5 +1,7 @@
 import socket
 
+# 1MB buffer size
+BUFFER_SIZE = 1000000
 #create the server details
 serverName = 'localhost'
 serverPort = 8080
@@ -28,7 +30,7 @@ except:
 
 #receive results from request
 try:
-    result = (clientSocket.recv(2048)).decode('utf-8')
+    result = (clientSocket.recv(BUFFER_SIZE)).decode('utf-8')
 except:
     print('received no response from server')
 
