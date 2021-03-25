@@ -128,9 +128,12 @@ while True:
     # ~~~~ INSERT CODE ~~~~
     
     #little hack-it code only sends 1 line from the request (which is normal)
+    cacheResponse = ''
     for line in outputdata:
-      response = str.encode(line)
-      clientSocket.send(response)
+      cacheResponse += str(line) # string concatenation then send the string
+    
+    cR_B = cacheResponse.encode('utf-8')
+    clientSocket.send(cR_B)
     # ~~~~ END CODE INSERT ~~~~
 
     cacheFile.close()
@@ -147,6 +150,8 @@ while True:
       # store the value in clientResponse
       # ~~~~ INSERT CODE ~~~~
       clientResponse = '415 Unsupported Media Type'
+      #delete the cached file
+
       # ~~~~ END CODE INSERT ~~~~
 
       print ('Sending to the client:')
@@ -167,16 +172,13 @@ while True:
 
       print ('Connecting to:\t\t' + hostname + '\n')
       try:
-        print('creating address for origin socket')
         # Get the IP address for a hostname
         address = socket.gethostbyname(hostname)
 
         # Connect to the origin server
         # ~~~~ INSERT CODE ~~~~
-        print('creating originServerSocket','\n')
-        serverName = 'autoidlab.cs.adelaide.edu.au'
-        serverPort = 80
-        originServerSocket = socket.create_connection( (serverName, serverPort) )
+        print('Creating originServerSocket','\n')
+        originServerSocket = socket.create_connection( (address, 80) ) #now working
         # ~~~~ END CODE INSERT ~~~~
 
         print ('Connected to origin Server')
@@ -248,7 +250,7 @@ while True:
         print ('cache file closed')
         clientSocket.shutdown(socket.SHUT_WR)
         print ('client socket shutdown for writing')
-      except IOError (value, message):
+      except IOError:
         print ('origin server request failed. ' + message)
   try:
     #testing
