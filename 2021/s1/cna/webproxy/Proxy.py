@@ -73,7 +73,7 @@ while True:
   # Get request from client
   # and store it in message
   # ~~~~ INSERT CODE ~~~~
-  message = (clientSocket.recv(2048)).decode("utf-8") # convert bytes object to string
+  message = (clientSocket.recv(BUFFER_SIZE)).decode("utf-8") # convert bytes object to string
   # ~~~~ END CODE INSERT ~~~~
 
   print ('Received request:')
@@ -217,7 +217,7 @@ while True:
 
         # Get the response from the origin server
         # ~~~~ INSERT CODE ~~~~
-        response = serversocket.recv(2048)
+        response = serversocket.recv(BUFFER_SIZE)
         # ~~~~ END CODE INSERT ~~~~
 
         # Send the response to the client
