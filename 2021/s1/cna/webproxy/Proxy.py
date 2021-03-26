@@ -149,8 +149,7 @@ while True:
       # What would be the appropriate status code and message to send to client?
       # store the value in clientResponse
       # ~~~~ INSERT CODE ~~~~
-      clientResponse = '415 Unsupported Media Type'
-      #delete the cached file
+      clientResponse = '500 Internal Server Error'
 
       # ~~~~ END CODE INSERT ~~~~
 
