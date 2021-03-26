@@ -73,7 +73,7 @@ while True:
   # Get request from client
   # and store it in message
   # ~~~~ INSERT CODE ~~~~
-  message = (clientSocket.recv(BUFFER_SIZE)).decode("utf-8") # convert bytes object to string
+  message = clientSocket.recv(BUFFER_SIZE)
   # ~~~~ END CODE INSERT ~~~~
 
   print ('Received request:')
@@ -127,13 +127,11 @@ while True:
     # Send back contents of cached file
     # ~~~~ INSERT CODE ~~~~
     
-    #little hack-it code only sends 1 line from the request (which is normal)
     cacheResponse = ''
     for line in outputdata:
-      cacheResponse += str(line) # string concatenation then send the string
-    
-    cR_B = cacheResponse.encode('utf-8')
-    clientSocket.send(cR_B)
+      cacheResponse += str(line) # bad memory use but it works
+
+    clientSocket.send(cacheResponse)
     # ~~~~ END CODE INSERT ~~~~
 
     cacheFile.close()
@@ -177,7 +175,7 @@ while True:
         # Connect to the origin server
         # ~~~~ INSERT CODE ~~~~
         print('Creating originServerSocket' + '\n')
-        originServerSocket = socket.create_connection( (address, 80) ) #now working
+        originServerSocket = socket.create_connection( (address, 80) ) # now working
         # ~~~~ END CODE INSERT ~~~~
 
         print ('Connected to origin Server')
@@ -242,7 +240,7 @@ while True:
 
         # Save origin server response in the cache file
         # ~~~~ INSERT CODE ~~~~
-        cacheFile.write(cachelocation, response)
+        cacheFile.write(cacheLocation, response)
         # ~~~~ END CODE INSERT ~~~~
 
         print ('done sending')

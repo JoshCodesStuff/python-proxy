@@ -1,2 +1,2 @@
-GET /todos/1 HTTP/1.1
-Host: jsonplaceholder.typicode.com
+GET / HTTP/1.1
+Host: autoidlab.cs.adelaide.edu.au
