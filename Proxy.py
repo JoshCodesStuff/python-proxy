@@ -64,7 +64,7 @@ while True:
     # ~~~~ INSERT CODE ~~~~
     (clientSocket,address) = serversocket.accept()
     # ~~~~ END CODE INSERT ~~~~
-    print ('Received a connection from:', args.hostname)
+    print ('Received a connection from: ' + args.hostname)
   except:
     print ('Failed to accept connection')
     sys.exit()
@@ -100,7 +100,7 @@ while True:
   resourceParts = URI.split('/', 1)
 
   hostname = resourceParts[0]
-  print('hostname: ', hostname, '\n') #testing
+  print ('hostname: ' + hostname + '\n') #testing
   resource = '/'
 
   if len(resourceParts) == 2:
@@ -161,7 +161,7 @@ while True:
 
     else:
       #testing
-      print('File not found in cache - connecting to origin server for file')
+      print('\n' + 'File not found in cache - connecting to origin server for file' + '\n')
       
       originServerSocket = None
       # Create a socket to connect to origin server
@@ -177,7 +177,7 @@ while True:
 
         # Connect to the origin server
         # ~~~~ INSERT CODE ~~~~
-        print('Creating originServerSocket','\n')
+        print('Creating originServerSocket' + '\n')
         originServerSocket = socket.create_connection( (address, 80) ) #now working
         # ~~~~ END CODE INSERT ~~~~
 
@@ -195,7 +195,9 @@ while True:
         # originServerRequestHeader is the second line in the request
         # ~~~~ INSERT CODE ~~~~
 
-        #originServerRequestHeader = 
+        #request needs to grab the resource we are looking for - found in resource variable
+        originServerRequest = method + ' ' + resource + ' ' + version
+        originServerRequestHeader = 'Host:' + hostname
 
         # ~~~~ END CODE INSERT ~~~~
 
@@ -241,7 +243,7 @@ while True:
 
         # Save origin server response in the cache file
         # ~~~~ INSERT CODE ~~~~
-        cacheFile.write(response)
+        cacheFile.write(cachelocation, response)
         # ~~~~ END CODE INSERT ~~~~
 
         print ('done sending')
@@ -250,7 +252,7 @@ while True:
         print ('cache file closed')
         clientSocket.shutdown(socket.SHUT_WR)
         print ('client socket shutdown for writing')
-      except IOError:
+      except IOError, (value, message):
         print ('origin server request failed. ' + message)
   try:
     #testing
