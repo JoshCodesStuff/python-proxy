@@ -131,7 +131,7 @@ while True:
     for line in outputdata:
       cacheResponse += str(line) # bad memory use but it works
 
-    clientSocket.send(cacheResponse)
+    clientSocket.sendall(cacheResponse)
     # ~~~~ END CODE INSERT ~~~~
 
     cacheFile.close()
@@ -172,13 +172,15 @@ while True:
         # Get the IP address for a hostname
         address = socket.gethostbyname(hostname)
 
+        print address
+
         # Connect to the origin server
         # ~~~~ INSERT CODE ~~~~
         print('Creating originServerSocket' + '\n')
-        originServerSocket = socket.create_connection( (address, 80) ) # now working
+        originServerSocket.connect( (address,80) )
         # ~~~~ END CODE INSERT ~~~~
 
-        print ('Connected to origin Server')
+        print ('Connected to origin Server \n')
 
         # Create a file object associated with this socket
         # This lets us use file function calls
@@ -192,9 +194,8 @@ while True:
         # originServerRequestHeader is the second line in the request
         # ~~~~ INSERT CODE ~~~~
 
-        #request needs to grab the resource we are looking for - found in resource variable
         originServerRequest = method + ' ' + resource + ' ' + version
-        originServerRequestHeader = 'Host:' + hostname
+        originServerRequestHeader = 'Host: ' + hostname
 
         # ~~~~ END CODE INSERT ~~~~
 
@@ -207,21 +208,31 @@ while True:
           print ('> ' + line)
 
         try:
+          print ('\r sending request to origin server')
           originServerSocket.sendall(request)
+          print('\r request sent successfully')
         except socket.error:
           print ('Send failed')
           sys.exit()
 
+        print('\r writing origin server request to file')
         originServerFileObj.write(request)
+        print('\r request written to file')
 
         # Get the response from the origin server
         # ~~~~ INSERT CODE ~~~~
-        response = serversocket.recv(BUFFER_SIZE)
+        print ('\r response incoming')
+        #originServerSocket connected to server
+        response = originServerSocket.recv(BUFFER_SIZE)
+        print('\r response received: \n' + response)
         # ~~~~ END CODE INSERT ~~~~
 
         # Send the response to the client
         # ~~~~ INSERT CODE ~~~~
-        serversocket.send(response)
+        #serversocket accepted connection from client
+        print('\r sending response to client')
+        clientSocket.sendall(response)
+        print ('\r response sent')
         # ~~~~ END CODE INSERT ~~~~
 
         # finished sending to origin server - shutdown socket writes
@@ -240,7 +251,7 @@ while True:
 
         # Save origin server response in the cache file
         # ~~~~ INSERT CODE ~~~~
-        cacheFile.write(cacheLocation, response)
+        cacheFile.write(response)
         # ~~~~ END CODE INSERT ~~~~
 
         print ('done sending')
