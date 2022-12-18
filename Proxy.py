@@ -172,7 +172,7 @@ while True:
         # Get the IP address for a hostname
         address = socket.gethostbyname(hostname)
 
-        print address
+        print (address)
 
         # Connect to the origin server
         # ~~~~ INSERT CODE ~~~~
@@ -260,7 +260,7 @@ while True:
         print ('cache file closed')
         clientSocket.shutdown(socket.SHUT_WR)
         print ('client socket shutdown for writing')
-      except IOError, (value, message):
+      except IOError as message:
         print ('origin server request failed. ' + message)
   try:
     #testing
