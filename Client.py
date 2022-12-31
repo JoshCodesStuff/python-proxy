@@ -34,5 +34,5 @@ try:
 except:
     print('received no response from server')
 
-print('Rslt of rqst - ' + '\n' + result)
+print('Result of request - ' + '\n' + result)
 clientSocket.close()

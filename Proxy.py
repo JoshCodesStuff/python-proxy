@@ -77,7 +77,7 @@ while True:
   # ~~~~ END CODE INSERT ~~~~
 
   print ('Received request:')
-  print ('< ' + message)
+  print ('< ' + message.decode('utf-8'))
 
   # Extract the parts of the HTTP request line from the given message
   requestParts = message.split()
@@ -85,9 +85,9 @@ while True:
   URI = requestParts[1]
   version = requestParts[2]
 
-  print ('Method:\t\t' + method)
-  print ('URI:\t\t' + URI)
-  print ('Version:\t' + version)
+  print ('Method:\t\t' + method.decode('utf-8'))
+  print ('URI:\t\t' + URI.decode('utf-8'))
+  print ('Version:\t' + version.decode('utf-8'))
   print ('')
 
   # Remove http protocol from the URI
