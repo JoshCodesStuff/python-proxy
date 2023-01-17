@@ -1,7 +1,14 @@
+""" Exists only to test the Proxy.py module
+
+    Run this with the command 'python Client.py' and it will
+    download www.testingmcafeesites.com/testcat_ac.html from
+    its hosted server. Change the URL on line 28 if needed
+"""
+
 import socket
 
 # 1MB buffer size
-BUFFER_SIZE = 1000000
+BUFFER_SIZE = 1048576
 #create the server details
 serverName = 'localhost'
 serverPort = 8080
