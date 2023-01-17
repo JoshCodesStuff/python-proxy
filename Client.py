@@ -18,7 +18,7 @@ except:
     print('could not connect to proxy')
 
 #create the request to send to proxy
-request = 'GET http://autoidlab.cs.adelaide.edu.au HTTP/1.1'
+request = 'GET http://www.testingmcafeesites.com/testcat_ac.html HTTP/1.1'
 #encode request as bytes object
 request_as_bytes = str.encode(request)
 
