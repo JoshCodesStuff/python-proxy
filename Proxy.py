@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """ A program which uses http to download files over the internet and cache them.
     Author: Josh Codes
     Github: https://github.com/JoshCodesStuff
